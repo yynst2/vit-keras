@@ -3,7 +3,7 @@ import warnings
 import tensorflow as tf
 import typing_extensions as tx
 
-from . import layers, utils
+import layers, model_utils
 
 def build_TFMaT(
     sequence_length: int,
@@ -27,13 +27,13 @@ def build_TFMaT(
         kernel_size=motif_length_max,
         strides=1,
         padding="same",
-        name="motif embedding",
+        name="motif_embedding",
     )
     motif_embedding.trainable = False
     y=motif_embedding(x)
     y=tf.keras.layers.Dense(
         units=hidden_size,
-        name="motif to hidden embedding"
+        name="motif_to_hidden_embedding"
     )(y)
     y = layers.ClassToken(name="class_token")(y)
     y = layers.AddPositionEmbs(name="Transformer/posembed_input")(y)
@@ -49,12 +49,12 @@ def build_TFMaT(
         )(y)
     y = tf.keras.layers.Lambda(lambda v: v[:, 0],
                                name="ExtractToken")(y)
-    if representation_size is not None:
-        y = tf.keras.layers.Dense(
-            representation_size,
-            name="pre_logits",
-            activation="tanh"
-        )(y)
+
+    y = tf.keras.layers.Dense(
+        representation_size,
+        name="pre_logits",
+        activation="tanh"
+    )(y)
     if include_top:
         y = tf.keras.layers.Dense(
             classes,

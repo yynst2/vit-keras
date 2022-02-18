@@ -1,0 +1,227 @@
+Singularity> python run.py --mode train --compile_only --params configs/params.yaml
+INFO:tensorflow:TF_CONFIG environment variable: {}
+INFO:root:Running None on CS-1
+INFO:root:Running analyze_input_fn_compile
+INFO:root:[input_fn] - batch(): batch_size set to 128
+WARNING:tensorflow:From /cbcore/python/python-x86_64/lib/python3.7/site-packages/tensorflow/python/ops/resource_variable_ops.py:1666: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:Layer motif_embedding is casting an input tensor from dtype float64 to the layer's dtype of float32, which is new behavior in TensorFlow 2.  The layer has dtype float32 because it's dtype defaults to floatx.
+
+If you intended to run this layer in float32, you can safely ignore this warning. If in doubt, this warning is likely only an issue if you are porting a TensorFlow 1.X model to TensorFlow 2.
+
+To change all layers to have dtype float64 by default, call `tf.keras.backend.set_floatx('float64')`. To change just this layer, pass dtype='float64' to the layer constructor. If you are the author of this layer, you can disable autocasting by passing autocast=False to the base Layer constructor.
+
+=============== Starting Cerebras Compilation ===============
+Matching layers to kernels:   7%|████████████████▉                                                                                                                                                                                                                                             | 1/15 [00:10s, 10.61s/stages]RAN COMMAND: stack_main -c /ocean/projects/bio220011p/xcheni/modelzoo/TFMaT/tf/model_dir/cs_bda04c7682560235481781511183bffb9e9a2275c1e43cc5e0d2b2f3bee6b4e8/config.json -s /matching/kernelize -v /ocean/projects/bio220011p/xcheni/modelzoo/TFMaT/tf/model_dir/cs_bda04c7682560235481781511183bffb9e9a2275c1e43cc5e0d2b2f3bee6b4e8//viz/02-kernelize_viz.json -e /ocean/projects/bio220011p/xcheni/modelzoo/TFMaT/tf/model_dir/cs_bda04c7682560235481781511183bffb9e9a2275c1e43cc5e0d2b2f3bee6b4e8/error.json /ocean/projects/bio220011p/xcheni/modelzoo/TFMaT/tf/model_dir/cs_bda04c7682560235481781511183bffb9e9a2275c1e43cc5e0d2b2f3bee6b4e8/kernel_matching.json /ocean/projects/bio220011p/xcheni/modelzoo/TFMaT/tf/model_dir/cs_bda04c7682560235481781511183bffb9e9a2275c1e43cc5e0d2b2f3bee6b4e8/kernelize.json
+Matching layers to kernels:   7%|████████████████▉                                                                                                                                                                                                                                             | 1/15 [00:13s, 13.40s/stages]
+Traceback (most recent call last):
+  File "run.py", line 271, in <module>
+    main()
+  File "run.py", line 265, in main
+    eval_input_fn=eval_input_fn,
+  File "run.py", line 208, in run
+    input_fn, validate_only=runconfig_params["validate_only"], mode=mode
+  File "../../../modelzoo/common/tf/estimator/cs_estimator.py", line 61, in compile
+    super().compile(input_fn, validate_only, mode)
+  File "/cbcore/py_root/cerebras/tf/cs_estimator.py", line 1580, in compile
+    role=self.role,
+  File "/cbcore/py_root/cerebras/tf/cerebras_components.py", line 1646, in cached_stack_compile
+    stack.run()
+  File "/cbcore/py_root/cerebras/cigar/caching_stack.py", line 211, in run
+    stack.run()
+  File "/cbcore/py_root/cerebras/cigar/stack.py", line 2202, in run
+    out = STAGE_TO_METHOD[stage](self, curfile)
+  File "/cbcore/py_root/cerebras/cigar/stack.py", line 267, in wrapped_method
+    out = orig_method(self, infile)
+  File "/cbcore/py_root/cerebras/cigar/stack.py", line 417, in wrapped_method
+    outfile = orig_method(self, infile, outfile, viz_outfile, outlog)
+  File "/cbcore/py_root/cerebras/cigar/stack.py", line 1709, in kernelize
+    self._run_capture_output(stage, cmd, outlog)
+  File "/cbcore/py_root/cerebras/cigar/stack.py", line 1599, in _run_capture_output
+    source=proto.source,
+cerebras.common.errors.CerebrasKernelMatchingError: [Cerebras Compile Error (subtype "WhitelistedLeftoverNodes", source "/matching/kernelize:in")] While setting the port data, condition WhitelistedLeftoverNodes() was violated:
+Not all operations were matched to handwritten kernels, so the automatic kernel compiler (DTG) was invoked. However:
+        The following operations involved stateful data (cut edge):
+                o adam_power_precomp_106
+                o adam_power_precomp_107
+                o adam_power_precomp_111
+                o add_to_last_2_0
+                o add_to_last_2_1
+                o add_to_last_2_13
+                o add_to_last_2_14
+                o add_to_last_2_15
+                o add_to_last_2_19
+                o add_to_last_2_2
+                o add_to_last_2_20
+                o add_to_last_2_21
+                o add_to_last_2_22
+                o add_to_last_2_26
+                o add_to_last_2_27
+                o add_to_last_2_28
+                o add_to_last_2_29
+                o add_to_last_2_3
+                o add_to_last_2_33
+                o add_to_last_2_34
+                o add_to_last_2_35
+                o add_to_last_2_39
+                o add_to_last_2_40
+                o add_to_last_2_41
+                o add_to_last_2_45
+                o add_to_last_2_46
+                o add_to_last_2_47
+                o add_to_last_2_52
+                o add_to_last_2_54
+                o add_to_last_2_55
+                o add_to_last_2_59
+                o add_to_last_2_60
+                o add_to_last_2_61
+                o add_to_last_2_65
+                o add_to_last_2_67
+                o add_to_last_2_68
+                o add_to_last_2_7
+                o add_to_last_2_72
+                o add_to_last_2_8
+                o add_to_last_2_9
+                o core.n17
+                o core.n18
+                o core.n20
+                o core.n6.conv
+                o core.n6057
+                o core.n6065
+                o core.n6080
+                o core.n6088
+                o core.n6174
+                o core.n6182
+                o layer_norm_final_1
+                o layer_norm_final_10
+                o layer_norm_final_11
+                o layer_norm_final_12
+                o layer_norm_final_13
+                o layer_norm_final_14
+                o layer_norm_final_15
+                o layer_norm_final_16
+                o layer_norm_final_17
+                o layer_norm_final_18
+                o layer_norm_final_19
+                o layer_norm_final_2
+                o layer_norm_final_20
+                o layer_norm_final_21
+                o layer_norm_final_22
+                o layer_norm_final_23
+                o layer_norm_final_24
+                o layer_norm_final_3
+                o layer_norm_final_4
+                o layer_norm_final_5
+                o layer_norm_final_6
+                o layer_norm_final_7
+                o layer_norm_final_8
+                o layer_norm_final_9
+                o sub_203
+                o sub_204
+                o sub_205
+                o add_layer_0
+                o add_layer_1
+                o attn_multihead_input_proj_basic_0
+                o attn_multihead_input_proj_basic_1
+                o attn_multihead_input_proj_basic_10
+                o attn_multihead_input_proj_basic_11
+                o attn_multihead_input_proj_basic_12
+                o attn_multihead_input_proj_basic_13
+                o attn_multihead_input_proj_basic_14
+                o attn_multihead_input_proj_basic_15
+                o attn_multihead_input_proj_basic_16
+                o attn_multihead_input_proj_basic_17
+                o attn_multihead_input_proj_basic_18
+                o attn_multihead_input_proj_basic_19
+                o attn_multihead_input_proj_basic_2
+                o attn_multihead_input_proj_basic_20
+                o attn_multihead_input_proj_basic_21
+                o attn_multihead_input_proj_basic_22
+                o attn_multihead_input_proj_basic_23
+                o attn_multihead_input_proj_basic_24
+                o attn_multihead_input_proj_basic_25
+                o attn_multihead_input_proj_basic_26
+                o attn_multihead_input_proj_basic_27
+                o attn_multihead_input_proj_basic_28
+                o attn_multihead_input_proj_basic_29
+                o attn_multihead_input_proj_basic_3
+                o attn_multihead_input_proj_basic_30
+                o attn_multihead_input_proj_basic_31
+                o attn_multihead_input_proj_basic_32
+                o attn_multihead_input_proj_basic_33
+                o attn_multihead_input_proj_basic_34
+                o attn_multihead_input_proj_basic_35
+                o attn_multihead_input_proj_basic_4
+                o attn_multihead_input_proj_basic_5
+                o attn_multihead_input_proj_basic_6
+                o attn_multihead_input_proj_basic_7
+                o attn_multihead_input_proj_basic_8
+                o attn_multihead_input_proj_basic_9
+                o attn_multihead_output_projection_0
+                o attn_multihead_output_projection_1
+                o attn_multihead_output_projection_10
+                o attn_multihead_output_projection_11
+                o attn_multihead_output_projection_2
+                o attn_multihead_output_projection_3
+                o attn_multihead_output_projection_4
+                o attn_multihead_output_projection_5
+                o attn_multihead_output_projection_6
+                o attn_multihead_output_projection_7
+                o attn_multihead_output_projection_8
+                o attn_multihead_output_projection_9
+                o fc_comp_0
+                o fc_comp_1
+                o matmul_nobias_0
+                o matmul_nobias_1
+                o matmul_nobias_10
+                o matmul_nobias_13
+                o matmul_nobias_14
+                o matmul_nobias_19
+                o matmul_nobias_20
+                o matmul_nobias_21
+                o matmul_nobias_27
+                o matmul_nobias_28
+                o matmul_nobias_33
+                o matmul_nobias_35
+                o matmul_nobias_4
+                o matmul_nobias_41
+                o matmul_nobias_42
+                o matmul_nobias_49
+                o matmul_nobias_5
+                o matmul_nobias_50
+                o matmul_nobias_55
+                o matmul_nobias_56
+                o matmul_nobias_57
+                o matmul_nobias_6
+                o matmul_nobias_63
+                o matmul_nobias_64
+                o matmul_nobias_67
+        Although DTG can handle cut edges, the full support is still experimental.
+
+        Found the following node(s) with disallowed ops. These operations have not been tested through the DTG compiler.
+                o "gradients/motif_embedding/conv1d_grad/Conv2DBackpropFilter" (core.n6170.conv) contains the operation "convolution" that is not present in the whitelist.
+                o "class_token/concat.motif_embedding/conv1d/ExpandDims/dim" (core.n18) contains the operation "concatenate" that is not present in the whitelist.
+                o "motif_embedding/conv1d" (core.n6.conv) contains the operation "convolution" that is not present in the whitelist.
+                o "motif_embedding/conv1d" (core.n6.padding) contains the operation "convolution" that is not present in the whitelist.
+
+        To proceed anyway, recompile with config.matching.autogen_policy = AP_ENABLED
+
+Also, potential matches of handwritten kernels were rejected:
+        o
+        o Potential match for kernel of type "Conversion" was rejected: Not enabled. Set FullConfig.matching.kernel.enable_oned_conversion = True
+        o Potential match for kernel of type "FcLayer" was rejected: We currently do not support T_F32 as a datatype for input port rxact of this kernel.
+        o Potential match for kernel of type "FcLayer" was rejected: We currently do not support T_F32 as a datatype for input port rxdelta of this kernel.
+        o Potential match for kernel of type "GradientMetaGenerator" was rejected: We currently do not support T_F32 as a datatype for input port rxact of this kernel.
+        o Potential match for kernel of type "GradientMetaGenerator" was rejected: We currently do not support T_F32 as a datatype for input port rxdelta of this kernel.
+        o Potential match for kernel of type "GradientMetaGenerator" was rejected: We currently do not support T_F32 as a datatype for input port rxgrad of this kernel.
+        o Potential match for kernel of type "InnerProduct" was rejected: We currently do not support T_F32 as a datatype for input port rx2act of this kernel.
+        o Potential match for kernel of type "InnerProduct" was rejected: We currently do not support T_F32 as a datatype for input port rxact of this kernel.
+        o Potential match for kernel of type "InputMeta" was rejected: we currently do not support T_F64 as a datatype for output port txdata of this kernel.
+        o Potential match for kernel of type "MetaPortWrapper" was rejected: We currently do not support T_F32 as a datatype for input port rxact of this kernel.
+        o Potential match for kernel of type "MetaPortWrapper" was rejected: We currently do not support T_F32 as a datatype for input port rxdelta of this kernel.
+        o Potential match for kernel of type "OnedBNlinLayer" was rejected: We currently do not support T_F32 as a datatype for input port rxact2 of this kernel.
+        o Potential match for kernel of type "OnedBNlinLayer" was rejected: We currently do not support T_F32 as a datatype for input port rxdelta of this kernel.
+        o Potential match for kernel of type "OnedLoss" was rejected: we currently do not support T_F32 as a datatype for output port txdelta of this kernel.
+        o Potential match for kernel of type "OuterProduct" was rejected: We currently do not support T_F32 as a datatype for input port rx2act of this kernel.
+        o Potential match for kernel of type "OuterProduct" was rejected: We currently do not support T_F32 as a datatype for input port rxact of this kernel.
